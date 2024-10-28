@@ -1,8 +1,0 @@
-services:
-  logto:
-    image: ghcr.io/logto-io/logto:latest
-    ports:
-      - 3001:3001
-      - 3002:3002
-    environment:
-      - DB_URL=postgres://postgres:postgres@host.docker.internal/logto

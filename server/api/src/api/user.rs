@@ -1,11 +1,10 @@
 use axum::{
     extract::{Path, State},
-    response::IntoResponse,
-    Extension, Json,
+    Json,
 };
 
 use aide::{
-    axum::{routing::*, ApiRouter as Router, IntoApiResponse},
+    axum::{routing::*, ApiRouter as Router},
     transform::TransformOperation,
 };
 
@@ -13,8 +12,9 @@ use service::{sea_orm::DbErr, Mutation, Query};
 
 use crate::{
     error::Error,
+    extractors::JwtClaims,
     models::{CreateUser, User},
-    state::{AppState, Configuration},
+    state::AppState,
 };
 
 pub fn router(state: AppState) -> Router {
@@ -26,9 +26,10 @@ pub fn router(state: AppState) -> Router {
 }
 
 async fn put_user(
+    _jwt: JwtClaims,
     State(state): State<AppState>,
     Json(new_user): Json<CreateUser>,
-) -> impl IntoApiResponse {
+) -> Result<Json<User>, Error> {
     let CreateUser {
         username,
         email,
@@ -40,7 +41,6 @@ async fn put_user(
         .map(User::from)
         .map(Json)
         .map_err(Error::from)
-        .into_response()
 }
 
 fn put_user_docs(op: TransformOperation) -> TransformOperation {
@@ -48,14 +48,17 @@ fn put_user_docs(op: TransformOperation) -> TransformOperation {
         .response::<201, Json<User>>()
 }
 
-async fn get_user(State(state): State<AppState>, Path(user_id): Path<i32>) -> impl IntoApiResponse {
+async fn get_user(
+    _jwt: JwtClaims,
+    State(state): State<AppState>,
+    Path(user_id): Path<i32>,
+) -> Result<Json<User>, Error> {
     let user = Query::user_by_id(&state.db, user_id)
         .await
         .and_then(|a| a.ok_or(DbErr::RecordNotFound(format!("{}", user_id))))
         .map_err(Error::from)
         .map(User::from)
-        .map(Json)
-        .into_response();
+        .map(Json);
 
     user
 }
@@ -63,18 +66,17 @@ async fn get_user(State(state): State<AppState>, Path(user_id): Path<i32>) -> im
 fn get_user_docs(op: TransformOperation) -> TransformOperation {
     op.description("Get a user by its id")
         .response::<201, Json<User>>()
-        .response::<500, String>()
 }
 
 async fn delete_user(
+    _jwt: JwtClaims,
     State(state): State<AppState>,
     Path(user_id): Path<i32>,
-) -> impl IntoApiResponse {
+) -> Result<(), Error> {
     Mutation::delete_user(&state.db, user_id)
         .await
         .map(|_| ())
         .map_err(Error::from)
-        .into_response()
 }
 
 fn delete_user_docs(op: TransformOperation) -> TransformOperation {

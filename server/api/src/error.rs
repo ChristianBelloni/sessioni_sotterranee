@@ -1,4 +1,4 @@
-use aide::{axum::IntoApiResponse, OperationOutput};
+use aide::OperationOutput;
 use axum::{http::StatusCode, response::IntoResponse};
 use migration::DbErr;
 
@@ -19,6 +19,25 @@ pub enum Error {
     ),
     #[error(transparent)]
     Reqwest(#[from] reqwest::Error),
+}
+
+impl OperationOutput for Error {
+    type Inner = Self;
+    fn inferred_responses(
+        _ctx: &mut aide::gen::GenContext,
+        operation: &mut aide::openapi::Operation,
+    ) -> Vec<(Option<u16>, aide::openapi::Response)> {
+        if let Some(responses) = operation
+            .responses
+            .as_ref()
+            .and_then(|a| a.responses.first())
+            .and_then(|a| Some((Some(a.0.to_string().parse().ok()?), a.1.as_item()?.clone())))
+        {
+            vec![responses.clone()]
+        } else {
+            vec![(Some(500), Default::default())]
+        }
+    }
 }
 
 impl IntoResponse for Error {

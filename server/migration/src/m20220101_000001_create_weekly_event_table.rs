@@ -1,7 +1,12 @@
 use extension::postgres::TypeDropStatement;
-use sea_orm::{sqlx::Column, ActiveEnum, DbBackend, DeriveActiveEnum, EnumIter, Iterable, Schema};
+use sea_orm::{
+    sqlx::Column, ActiveEnum, DbBackend, DeriveActiveEnum, EnumIter, Iterable, Schema,
+    StatementBuilder,
+};
 use sea_orm_migration::{prelude::*, schema::*};
 use table::ColumnDef;
+
+use crate::enable_row_level_security;
 
 #[derive(DeriveMigrationName)]
 pub struct Migration;
@@ -36,43 +41,6 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(User::Table)
-                    .if_not_exists()
-                    .col(pk_auto(User::Id))
-                    .col(string(User::Email))
-                    .col(string(User::Username))
-                    .col(timestamp_with_time_zone(User::CreatedAt))
-                    .col(timestamp_with_time_zone(User::LastUpdatedAt))
-                    .col(
-                        ColumnDef::new(User::RoleKind)
-                            .custom(RoleKind::name())
-                            .not_null(),
-                    )
-                    .to_owned(),
-            )
-            .await?;
-
-        manager
-            .create_table(
-                Table::create()
-                    .table(Session::Table)
-                    .if_not_exists()
-                    .col(pk_auto(Session::Id))
-                    .col(integer(Session::UserId))
-                    .col(string(Session::SessionId))
-                    .col(timestamp_with_time_zone(Session::ExpiresAt))
-                    .foreign_key(
-                        ForeignKey::create()
-                            .from(Session::Table, Session::UserId)
-                            .to(User::Table, User::Id),
-                    )
-                    .to_owned(),
-            )
-            .await?;
-
-        manager
-            .create_table(
-                Table::create()
                     .table(Interested::Table)
                     .if_not_exists()
                     .primary_key(
@@ -81,12 +49,12 @@ impl MigrationTrait for Migration {
                             .col(Interested::UserId)
                             .col(Interested::EventId),
                     )
-                    .col(integer(Interested::UserId))
+                    .col(string(Interested::UserId))
                     .col(integer(Interested::EventId))
                     .foreign_key(
                         ForeignKey::create()
                             .from(Interested::Table, Interested::UserId)
-                            .to(User::Table, User::Id),
+                            .to(Users::Table, Users::Id),
                     )
                     .foreign_key(
                         ForeignKey::create()
@@ -108,29 +76,18 @@ impl MigrationTrait for Migration {
                             .col(Attending::UserId)
                             .col(Attending::EventId),
                     )
-                    .col(integer(Attending::UserId))
+                    .col(string(Attending::UserId))
                     .col(integer(Attending::EventId))
                     .foreign_key(
                         ForeignKey::create()
                             .from(Attending::Table, Attending::UserId)
-                            .to(User::Table, User::Id),
+                            .to(Users::Table, Users::Id),
                     )
                     .foreign_key(
                         ForeignKey::create()
                             .from(Attending::Table, Attending::EventId)
                             .to(WeeklyEvent::Table, WeeklyEvent::Id),
                     )
-                    .to_owned(),
-            )
-            .await?;
-
-        manager
-            .create_index(
-                Index::create()
-                    .if_not_exists()
-                    .name("idx-user-role")
-                    .table(User::Table)
-                    .col(User::RoleKind)
                     .to_owned(),
             )
             .await?;
@@ -146,18 +103,16 @@ impl MigrationTrait for Migration {
             )
             .await?;
 
+        let db = manager.get_connection();
+        enable_row_level_security(db, "seaql_migrations").await?;
+        enable_row_level_security(db, "weekly_event").await?;
+        enable_row_level_security(db, "attending").await?;
+        enable_row_level_security(db, "interested").await?;
+
         Ok(())
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        manager
-            .drop_index(
-                Index::drop()
-                    .table(User::Table)
-                    .name("idx-user-role")
-                    .to_owned(),
-            )
-            .await?;
         manager
             .drop_index(
                 Index::drop()
@@ -172,9 +127,6 @@ impl MigrationTrait for Migration {
         manager
             .drop_table(Table::drop().table(Interested::Table).to_owned())
             .await?;
-        manager
-            .drop_table(Table::drop().table(User::Table).to_owned())
-            .await?;
 
         manager
             .drop_table(Table::drop().table(WeeklyEvent::Table).to_owned())
@@ -187,23 +139,11 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum User {
+enum Users {
     Table,
     Id,
-    Email,
-    Username,
-    CreatedAt,
-    LastUpdatedAt,
-    RoleKind,
-}
 
-#[derive(DeriveIden)]
-enum Session {
-    Table,
-    Id,
-    UserId,
-    SessionId,
-    ExpiresAt,
+    RoleKind,
 }
 
 #[derive(EnumIter, DeriveActiveEnum)]

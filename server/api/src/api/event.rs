@@ -1,17 +1,16 @@
 use axum::{
     extract::{Path, State},
-    response::IntoResponse,
     Json,
 };
 
 use aide::{
-    axum::{routing::*, ApiRouter as Router, IntoApiResponse},
+    axum::{routing::*, ApiRouter as Router},
     transform::TransformOperation,
 };
 
 use service::{sea_orm::DbErr, Query};
 
-use crate::{error::Error, models::WeeklyEvent, state::AppState};
+use crate::{error::Error, extractors::JwtClaims, models::WeeklyEvent, state::AppState};
 
 pub fn router(state: AppState) -> Router {
     Router::new()
@@ -19,14 +18,16 @@ pub fn router(state: AppState) -> Router {
         .with_state(state)
 }
 
-async fn get_event(State(state): State<AppState>, Path(id): Path<i32>) -> impl IntoApiResponse {
-    Query::weekly_event_by_id(&state.db, id)
+async fn get_event(
+    State(state): State<AppState>,
+    Path(id): Path<i32>,
+    jwt: JwtClaims,
+) -> Result<Json<WeeklyEvent>, Error> {
+    Ok(Query::weekly_event_by_id(&state.db, id)
         .await
         .and_then(|a| a.ok_or(DbErr::RecordNotFound("event not found".to_string())))
-        .map_err(Error::from)
         .map(WeeklyEvent::from)
-        .map(Json)
-        .into_response()
+        .map(Json)?)
 }
 
 fn get_event_docs(op: TransformOperation) -> TransformOperation {
