@@ -1,0 +1,35 @@
+[package]
+name = "api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+service = { path = "../service" }
+tokio = { version = "1.34.0", features = ["full"] }
+axum = { version = "0.7.1", features = ["tracing", "macros"] }
+tower = "0.4.13"
+tower-http = { version = "0.5.0", features = ["fs"] }
+tower-cookies = "0.10.0"
+anyhow = "1.0.75"
+dotenvy = "0.15.7"
+serde = "1.0.193"
+serde_json = "1.0.108"
+tera = "1.19.1"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+entity = { path = "../entity" }
+migration = { path = "../migration" }
+thiserror = { version = "1.0" }
+tracing = "0.1"
+schemars = "*"
+aide = { version = "0.13.4", features = ["axum", "axum-extra", "axum-extra-cookie", "axum-headers", "axum-ws", "macros", "redoc", "scalar"] }
+oauth2 = "4.4.2"
+reqwest = { version = "0.11", features = ["json"] }
+axum-extra = { version = "0.9.4", features = ["cookie", "cookie-private"] }
+chrono = "0.4.38"
+time = "0.3.36"
+axum-oidc = "0.5.0"
+tower-sessions = "0.13.0"
+
+[[bin]]
+name = "generate"
+

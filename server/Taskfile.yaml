@@ -1,0 +1,15 @@
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - cargo run
+  migrate-refresh:
+    cmds:
+      - sea-orm-cli migrate up
+  migrate:
+    cmds:
+      - sea-orm-cli migrate up
+  generate:
+    cmds:
+      - sea-orm-cli generate entity -o entity/src -l 
