@@ -1,9 +1,5 @@
 #!/bin/bash
 
-npm run start &
+nginx
 
-nginx &
-
-wait
-
-exit $?
+npm run start
