@@ -1,44 +1,17 @@
 use super::Query;
-use entity::{prelude::*, sea_orm_active_enums::RoleKind};
-use sea_orm::{
-    ColumnTrait, DatabaseConnection, DbErr, EntityTrait, QueryFilter, QuerySelect, Select,
-};
-
-trait UserExt {
-    fn filter_by_role(self, role: RoleKind) -> Self;
-}
-
-impl UserExt for Select<User> {
-    fn filter_by_role(self, role: RoleKind) -> Self {
-        self.filter(entity::user::Column::RoleKind.eq(role))
-    }
-}
+use entity::prelude::*;
+use sea_orm::{DatabaseConnection, DbErr, EntityTrait, ModelTrait};
 
 impl Query {
-    pub async fn user_by_id(
+    pub async fn get_user(
         connection: &DatabaseConnection,
-        id: i32,
-    ) -> Result<Option<entity::user::Model>, DbErr> {
-        let res = User::find_by_id(id).one(connection).await?;
+        user_id: i32,
+    ) -> Result<Option<(entity::user::Model, Vec<entity::role::Model>)>, DbErr> {
+        let Some(results) = User::find_by_id(user_id).one(connection).await? else {
+            return Ok(None);
+        };
+        let roles = results.find_related(Role).all(connection).await?;
 
-        Ok(res)
-    }
-
-    pub async fn users_by_role_kind(
-        connection: &DatabaseConnection,
-        kind: RoleKind,
-        offset: u64,
-        limit: u64,
-    ) -> Result<Vec<entity::user::Model>, DbErr> {
-        let res = User::find()
-            .filter_by_role(kind)
-            .offset(Some(offset))
-            .limit(Some(limit))
-            .all(connection)
-            .await?
-            .into_iter()
-            .collect();
-
-        Ok(res)
+        Ok(Some((results, roles)))
     }
 }

@@ -10,7 +10,7 @@ use aide::{
 
 use service::{sea_orm::DbErr, Query};
 
-use crate::{error::Error, extractors::JwtClaims, models::WeeklyEvent, state::AppState};
+use crate::{error::Error, extractors::JwtClaims, models::Event, state::AppState};
 
 pub fn router(state: AppState) -> Router {
     Router::new()
@@ -22,15 +22,15 @@ async fn get_event(
     State(state): State<AppState>,
     Path(id): Path<i32>,
     jwt: JwtClaims,
-) -> Result<Json<WeeklyEvent>, Error> {
-    Ok(Query::weekly_event_by_id(&state.db, id)
+) -> Result<Json<Event>, Error> {
+    Ok(Query::event_by_id(&state.db, id)
         .await
         .and_then(|a| a.ok_or(DbErr::RecordNotFound("event not found".to_string())))
-        .map(WeeklyEvent::from)
+        .map(Event::from)
         .map(Json)?)
 }
 
 fn get_event_docs(op: TransformOperation) -> TransformOperation {
     op.description("Get an event by id")
-        .response::<201, Json<WeeklyEvent>>()
+        .response::<201, Json<Event>>()
 }

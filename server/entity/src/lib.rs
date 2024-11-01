@@ -2,9 +2,10 @@
 
 pub mod prelude;
 
-pub mod attending;
-pub mod interested;
-pub mod sea_orm_active_enums;
-pub mod session;
+pub mod event;
+pub mod event_attending;
+pub mod event_interested;
+pub mod role;
+pub mod street_jam;
+pub mod street_jam_message;
 pub mod user;
-pub mod weekly_event;
