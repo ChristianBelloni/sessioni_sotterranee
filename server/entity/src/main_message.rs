@@ -3,24 +3,18 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "event_attending")]
+#[sea_orm(table_name = "main_message")]
 pub struct Model {
-    #[sea_orm(primary_key, auto_increment = false)]
+    #[sea_orm(primary_key)]
+    pub id: i32,
     pub user_id: i32,
-    #[sea_orm(primary_key, auto_increment = false)]
-    pub event_id: i32,
+    pub date: DateTimeWithTimeZone,
+    #[sea_orm(column_type = "Text")]
+    pub message_text: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(
-        belongs_to = "super::event::Entity",
-        from = "Column::EventId",
-        to = "super::event::Column::Id",
-        on_update = "Cascade",
-        on_delete = "Cascade"
-    )]
-    Event,
     #[sea_orm(
         belongs_to = "super::user::Entity",
         from = "Column::UserId",
@@ -29,12 +23,6 @@ pub enum Relation {
         on_delete = "Cascade"
     )]
     User,
-}
-
-impl Related<super::event::Entity> for Entity {
-    fn to() -> RelationDef {
-        Relation::Event.def()
-    }
 }
 
 impl Related<super::user::Entity> for Entity {

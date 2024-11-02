@@ -15,12 +15,14 @@ pub enum Relation {
     EventAttending,
     #[sea_orm(has_many = "super::event_interested::Entity")]
     EventInterested,
-    #[sea_orm(has_many = "super::role::Entity")]
-    Role,
+    #[sea_orm(has_many = "super::main_message::Entity")]
+    MainMessage,
     #[sea_orm(has_many = "super::street_jam::Entity")]
     StreetJam,
     #[sea_orm(has_many = "super::street_jam_message::Entity")]
     StreetJamMessage,
+    #[sea_orm(has_many = "super::user_role::Entity")]
+    UserRole,
 }
 
 impl Related<super::event_attending::Entity> for Entity {
@@ -35,9 +37,9 @@ impl Related<super::event_interested::Entity> for Entity {
     }
 }
 
-impl Related<super::role::Entity> for Entity {
+impl Related<super::main_message::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Role.def()
+        Relation::MainMessage.def()
     }
 }
 
@@ -50,6 +52,12 @@ impl Related<super::street_jam::Entity> for Entity {
 impl Related<super::street_jam_message::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::StreetJamMessage.def()
+    }
+}
+
+impl Related<super::user_role::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::UserRole.def()
     }
 }
 

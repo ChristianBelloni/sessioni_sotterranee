@@ -3,7 +3,9 @@
 pub use super::event::Entity as Event;
 pub use super::event_attending::Entity as EventAttending;
 pub use super::event_interested::Entity as EventInterested;
+pub use super::main_message::Entity as MainMessage;
 pub use super::role::Entity as Role;
 pub use super::street_jam::Entity as StreetJam;
 pub use super::street_jam_message::Entity as StreetJamMessage;
 pub use super::user::Entity as User;
+pub use super::user_role::Entity as UserRole;
