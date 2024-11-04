@@ -18,7 +18,7 @@ impl MigrationTrait for Migration {
                     .col(timestamp_with_time_zone(StreetJam::Date))
                     .col(string(StreetJam::Title))
                     .col(string_null(StreetJam::Description))
-                    .col(string(StreetJam::Genre))
+                    .col(string_null(StreetJam::Genre))
                     .col(string_null(StreetJam::Location))
                     .foreign_key(
                         ForeignKey::create()

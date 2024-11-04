@@ -13,3 +13,10 @@ tasks:
   generate:
     cmds:
       - sea-orm-cli generate entity -o entity/src -l 
+  download_specs:
+    cmds:
+      - ./make_specs.sh
+
+  yaml_specs_to_app:
+    cmds:
+      - yq -p json -o yaml ./api_specs.json > "../ios/Sessioni Sotterranee/Sessioni Sotterranee/openapi.yaml"

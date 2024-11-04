@@ -12,15 +12,21 @@ import ComposableArchitecture
 @Reducer
 struct LoginFeature {
     @Dependency(\.authClient) var authClient
+    @Dependency(\.apiClient) var apiClient
     
     @ObservableState
     struct State: Equatable {
+        var requiresUsername: Bool = false
+        var username: String = ""
         var error: String?
     }
     
     enum Action {
         case LaunchLogin
-        case LoggedIn
+        case LoggedIn(String)
+        case RequiresUsername
+        case UsernameChanged(String)
+        case SetUsername
         case Error(String)
     }
     
@@ -32,13 +38,32 @@ struct LoginFeature {
                 return .run { send in
                     do {
                         try await authClient.signIn()
-                        await send(.LoggedIn)
+                        if let username = await authClient.username() {
+                            await send(.LoggedIn(username))
+                        } else {
+                            await send(.RequiresUsername)
+                        }
                     } catch {
                         await send(.Error(error.localizedDescription))
                     }
                 }
             case .Error(let error):
                 state.error = error
+            case .RequiresUsername:
+                state.requiresUsername = true
+            case .UsernameChanged(let newValue):
+                state.username = newValue
+            case .SetUsername:
+                return .run { [username = state.username] send in
+                    do {
+                        _ = try await apiClient.patch_sol_api_sol_users_sol_set_username(query: .init(username: username)).ok
+                        
+                        await send(.LoggedIn(username))
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                    
+                }
             default:
                 return .none
             }
@@ -48,15 +73,74 @@ struct LoginFeature {
 }
 
 struct LoginView : View {
-    let store: StoreOf<LoginFeature>
+    @Dependency(\.authClient) var authClient
+    @Bindable var store: StoreOf<LoginFeature>
     
     var body: some View {
-        VStack {
-            Text("Sessioni Sotterranee")
-            Button("Login") {
-                store.send(.LaunchLogin)
+        ZStack {
+            LinearGradient(colors: [Color.accentColor, Color.text], startPoint: .bottom, endPoint: .top)
+            if store.state.requiresUsername {
+                VStack {
+                    TextField("Sessioni Sotterranee", text: $store.username.sending(\.UsernameChanged))
+                        .font(.largeTitle)
+                        .foregroundStyle(.white.opacity(0.8))
+                        .padding(20)
+                        .frame(maxWidth: .infinity)
+                        .background(.secondary)
+                        .clipShape(.buttonBorder)
+                    Spacer()
+                    Button("Prosegui") {
+                        store.send(.SetUsername)
+                    }
+                    .foregroundStyle(.white.opacity(0.8))
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .font(.title)
+                    .background(.secondary)
+                    .clipShape(.buttonBorder)
+                    
+                }.padding(.vertical, 150)
+                    .padding(.horizontal, 20)
+            } else {
+                VStack {
+                    Text("Sessioni Sotterranee")
+                        .font(.largeTitle)
+                        .foregroundStyle(.white.opacity(0.8))
+                        .padding(20)
+                        .frame(maxWidth: .infinity)
+                        .background(.secondary)
+                        .clipShape(.buttonBorder)
+                    Spacer()
+                    Button("Inizia") {
+                        store.send(.LaunchLogin)
+                    }
+                    .foregroundStyle(.white.opacity(0.8))
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .font(.title)
+                    .background(.secondary)
+                    .clipShape(.buttonBorder)
+                }.padding(.vertical, 150)
+                    .padding(.horizontal, 20)
+            }
+        }.onAppear() {
+            Task {
+                
+                if authClient.isAuthenticated {
+                    
+                    if let username = await authClient.username() {
+                        store.send(.LoggedIn(username))
+                    } else {
+                        store.send(.RequiresUsername)
+                    }
+                }
+                
             }
         }
-
     }
+}
+#Preview{
+    LoginView(store: Store(initialState: .init()) {
+        LoginFeature()
+    })
 }

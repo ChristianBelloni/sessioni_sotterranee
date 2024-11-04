@@ -5,8 +5,11 @@ use sea_orm::entity::prelude::*;
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
 #[sea_orm(table_name = "user")]
 pub struct Model {
-    #[sea_orm(primary_key, auto_increment = false)]
+    #[sea_orm(primary_key)]
     pub id: i32,
+    #[sea_orm(unique)]
+    pub log_to_id: String,
+    pub username: String,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
@@ -58,6 +61,15 @@ impl Related<super::street_jam_message::Entity> for Entity {
 impl Related<super::user_role::Entity> for Entity {
     fn to() -> RelationDef {
         Relation::UserRole.def()
+    }
+}
+
+impl Related<super::role::Entity> for Entity {
+    fn to() -> RelationDef {
+        super::user_role::Relation::Role.def()
+    }
+    fn via() -> Option<RelationDef> {
+        Some(super::user_role::Relation::User.def().rev())
     }
 }
 

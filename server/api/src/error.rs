@@ -1,9 +1,12 @@
 use aide::OperationOutput;
-use axum::{http::StatusCode, response::IntoResponse};
+use axum::{extract::FromRequestParts, http::StatusCode, response::IntoResponse};
+use axum_oidc::{EmptyAdditionalClaims, OidcClaims};
 use migration::DbErr;
 
 use oauth2::{basic::BasicErrorResponseType, RequestTokenError, StandardErrorResponse};
 use thiserror::Error;
+
+use crate::state::AppState;
 
 #[derive(Debug, Error)]
 pub enum Error {
@@ -19,6 +22,18 @@ pub enum Error {
     ),
     #[error(transparent)]
     Reqwest(#[from] reqwest::Error),
+    #[error("unauthorized")]
+    UnAuthorized,
+    #[error("not found")]
+    NotFound,
+}
+
+impl From<<OidcClaims<EmptyAdditionalClaims> as FromRequestParts<AppState>>::Rejection> for Error {
+    fn from(
+        _: <OidcClaims<EmptyAdditionalClaims> as FromRequestParts<AppState>>::Rejection,
+    ) -> Self {
+        Self::UnAuthorized
+    }
 }
 
 impl OperationOutput for Error {
@@ -35,7 +50,14 @@ impl OperationOutput for Error {
         {
             vec![responses.clone()]
         } else {
-            vec![(Some(500), Default::default())]
+            vec![
+                (
+                    Some(StatusCode::INTERNAL_SERVER_ERROR.into()),
+                    Default::default(),
+                ),
+                (Some(StatusCode::UNAUTHORIZED.into()), Default::default()),
+                (Some(StatusCode::NOT_FOUND.into()), Default::default()),
+            ]
         }
     }
 }
@@ -71,6 +93,8 @@ impl IntoResponse for Error {
                 )
                     .into_response()
             }
+            Error::UnAuthorized => (StatusCode::UNAUTHORIZED, "unauthrized").into_response(),
+            Error::NotFound => (StatusCode::NOT_FOUND, "unauthrized").into_response(),
         }
     }
 }

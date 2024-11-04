@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B00238232CD95B00009AF035 /* openapi-generator-config.yaml in Resources */ = {isa = PBXBuildFile; fileRef = B00238222CD95B00009AF035 /* openapi-generator-config.yaml */; };
+		B002383B2CD965E1009AF035 /* openapi.yaml in Resources */ = {isa = PBXBuildFile; fileRef = B002383A2CD965E1009AF035 /* openapi.yaml */; };
+		B002383E2CD9683B009AF035 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = B002383D2CD9683B009AF035 /* OpenAPIRuntime */; };
+		B00238402CD96842009AF035 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = B002383F2CD96842009AF035 /* OpenAPIURLSession */; };
+		B00238432CD96859009AF035 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00238422CD96859009AF035 /* ApiClient.swift */; };
 		B0F66A272CD3E184000816F8 /* AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A262CD3E184000816F8 /* AuthClient.swift */; };
 		B0F66A292CD3E3B1000816F8 /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */; };
 		B0F66A2B2CD3E3CA000816F8 /* LoginFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A2A2CD3E3CA000816F8 /* LoginFeature.swift */; };
@@ -40,6 +45,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B00238222CD95B00009AF035 /* openapi-generator-config.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "openapi-generator-config.yaml"; sourceTree = "<group>"; };
+		B002383A2CD965E1009AF035 /* openapi.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = openapi.yaml; sourceTree = "<group>"; };
+		B00238422CD96859009AF035 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
 		B0F66A262CD3E184000816F8 /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
 		B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		B0F66A2A2CD3E3CA000816F8 /* LoginFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeature.swift; sourceTree = "<group>"; };
@@ -62,6 +70,8 @@
 			files = (
 				B0F6A73C2CD3C004008E1455 /* Logto in Frameworks */,
 				B0F6A73E2CD3C004008E1455 /* LogtoClient in Frameworks */,
+				B002383E2CD9683B009AF035 /* OpenAPIRuntime in Frameworks */,
+				B00238402CD96842009AF035 /* OpenAPIURLSession in Frameworks */,
 				B0F6A7402CD3C004008E1455 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +117,7 @@
 		B0F6A70B2CD3BED1008E1455 /* Sessioni Sotterranee */ = {
 			isa = PBXGroup;
 			children = (
+				B002383A2CD965E1009AF035 /* openapi.yaml */,
 				B0F6A70C2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift */,
 				B0F6A70E2CD3BED1008E1455 /* AppFeature.swift */,
 				B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */,
@@ -114,6 +125,8 @@
 				B0F6A7122CD3BED2008E1455 /* Assets.xcassets */,
 				B0F6A7142CD3BED2008E1455 /* Preview Content */,
 				B0F66A262CD3E184000816F8 /* AuthClient.swift */,
+				B00238422CD96859009AF035 /* ApiClient.swift */,
+				B00238222CD95B00009AF035 /* openapi-generator-config.yaml */,
 			);
 			path = "Sessioni Sotterranee";
 			sourceTree = "<group>";
@@ -164,12 +177,15 @@
 			buildRules = (
 			);
 			dependencies = (
+				B00238282CD95C27009AF035 /* PBXTargetDependency */,
 			);
 			name = "Sessioni Sotterranee";
 			packageProductDependencies = (
 				B0F6A73B2CD3C004008E1455 /* Logto */,
 				B0F6A73D2CD3C004008E1455 /* LogtoClient */,
 				B0F6A73F2CD3C004008E1455 /* ComposableArchitecture */,
+				B002383D2CD9683B009AF035 /* OpenAPIRuntime */,
+				B002383F2CD96842009AF035 /* OpenAPIURLSession */,
 			);
 			productName = "Sessioni Sotterranee";
 			productReference = B0F6A7092CD3BED1008E1455 /* Sessioni Sotterranee.app */;
@@ -246,6 +262,9 @@
 			packageReferences = (
 				B0F6A7382CD3BF00008E1455 /* XCRemoteSwiftPackageReference "swift" */,
 				B0F6A7392CD3BF1F008E1455 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+				B00238242CD95BDA009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
+				B00238252CD95BFE009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
+				B00238262CD95C1C009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
 			);
 			productRefGroup = B0F6A70A2CD3BED1008E1455 /* Products */;
 			projectDirPath = "";
@@ -264,6 +283,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0F6A7162CD3BED2008E1455 /* Preview Assets.xcassets in Resources */,
+				B002383B2CD965E1009AF035 /* openapi.yaml in Resources */,
+				B00238232CD95B00009AF035 /* openapi-generator-config.yaml in Resources */,
 				B0F6A7132CD3BED2008E1455 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,6 +315,7 @@
 				B0F66A2B2CD3E3CA000816F8 /* LoginFeature.swift in Sources */,
 				B0F66A272CD3E184000816F8 /* AuthClient.swift in Sources */,
 				B0F6A70D2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift in Sources */,
+				B00238432CD96859009AF035 /* ApiClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +339,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		B00238282CD95C27009AF035 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = B00238272CD95C27009AF035 /* OpenAPIGenerator */;
+		};
 		B0F6A71D2CD3BED2008E1455 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B0F6A7082CD3BED1008E1455 /* Sessioni Sotterranee */;
@@ -625,6 +651,30 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		B00238242CD95BDA009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-generator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
+		B00238252CD95BFE009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-runtime";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.0;
+			};
+		};
+		B00238262CD95C1C009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-openapi-urlsession";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
 		B0F6A7382CD3BF00008E1455 /* XCRemoteSwiftPackageReference "swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/logto-io/swift.git";
@@ -644,6 +694,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B00238272CD95C27009AF035 /* OpenAPIGenerator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B00238242CD95BDA009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */;
+			productName = "plugin:OpenAPIGenerator";
+		};
+		B002383D2CD9683B009AF035 /* OpenAPIRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B00238252CD95BFE009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */;
+			productName = OpenAPIRuntime;
+		};
+		B002383F2CD96842009AF035 /* OpenAPIURLSession */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B00238262CD95C1C009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */;
+			productName = OpenAPIURLSession;
+		};
 		B0F6A73B2CD3C004008E1455 /* Logto */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B0F6A7382CD3BF00008E1455 /* XCRemoteSwiftPackageReference "swift" */;

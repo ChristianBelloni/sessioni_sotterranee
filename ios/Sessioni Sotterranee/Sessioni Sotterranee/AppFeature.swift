@@ -19,10 +19,10 @@ struct AppFeature {
         var authState: AuthState
         var login: LoginFeature.State
         var home: HomeFeature.State
-        init(isAuthenticated: Bool) {
+        init() {
             let login: LoginFeature.State = .init()
             let home: HomeFeature.State = .init()
-            self.authState = isAuthenticated ? .Logged(home) : .NotLogged(login)
+            self.authState = .NotLogged(.init())
             self.login = login
             self.home = home
             
@@ -88,7 +88,7 @@ struct AppView: View {
 }
 
 #Preview {
-    AppView(store: Store(initialState: .init(isAuthenticated: false)) {
+    AppView(store: Store(initialState: .init()) {
         AppFeature()
     })
 }

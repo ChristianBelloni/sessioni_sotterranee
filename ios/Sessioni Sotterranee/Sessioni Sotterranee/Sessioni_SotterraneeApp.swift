@@ -14,12 +14,9 @@ struct Sessioni_SotterraneeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ZStack {
-                LinearGradient(colors: [.black, .gray], startPoint: .top, endPoint: .bottom)
-                AppView(store: Store(initialState: .init(isAuthenticated: authClient.isAuthenticated)) {
-                    AppFeature()
-                })
-            }.ignoresSafeArea()
+            AppView(store: Store(initialState: .init()) {
+                AppFeature()
+            }).ignoresSafeArea()
         }
     }
 }

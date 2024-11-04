@@ -11,7 +11,7 @@ pub struct Model {
     pub date: DateTimeWithTimeZone,
     pub title: String,
     pub description: Option<String>,
-    pub genre: String,
+    pub genre: Option<String>,
     pub location: Option<String>,
 }
 

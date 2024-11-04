@@ -5,10 +5,14 @@ use sea_orm::{
     DatabaseConnection, DbErr, Set,
 };
 
+use crate::check_role;
+
 use super::Mutation;
 
 impl Mutation {
     pub async fn insert_event(
+        connection: &DatabaseConnection,
+        user_id: i32,
         title: &str,
         date: DateTime<FixedOffset>,
         description: Option<&str>,
@@ -16,8 +20,9 @@ impl Mutation {
         url: Option<&str>,
         image: Option<&str>,
         location: Option<&str>,
-        connection: &DatabaseConnection,
     ) -> Result<event::Model, DbErr> {
+        check_role(connection, user_id, "admin").await?;
+
         let event = event::ActiveModel {
             title: Set(title.to_owned()),
             date: Set(date),

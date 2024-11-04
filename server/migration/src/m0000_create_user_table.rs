@@ -1,4 +1,3 @@
-use sea_orm::{sqlx::Statement, StatementBuilder};
 use sea_orm_migration::{prelude::*, schema::*};
 
 #[derive(DeriveMigrationName)]
@@ -11,8 +10,9 @@ impl MigrationTrait for Migration {
             .create_table(
                 Table::create()
                     .table(User::Table)
-                    .primary_key(Index::create().table(User::Table).col(User::Id))
-                    .col(integer_uniq(User::Id))
+                    .col(pk_auto(User::Id))
+                    .col(string_uniq(User::LogToId))
+                    .col(string(User::Username))
                     .to_owned(),
             )
             .await?;
@@ -31,6 +31,12 @@ impl MigrationTrait for Migration {
                     .table(UserRole::Table)
                     .col(integer(UserRole::RoleId))
                     .col(integer(UserRole::UserId))
+                    .primary_key(
+                        Index::create()
+                            .table(UserRole::Table)
+                            .col(UserRole::UserId)
+                            .col(UserRole::RoleId),
+                    )
                     .foreign_key(
                         ForeignKey::create()
                             .from(UserRole::Table, UserRole::UserId)
@@ -76,6 +82,8 @@ impl MigrationTrait for Migration {
 pub enum User {
     Table,
     Id,
+    LogToId,
+    Username,
 }
 
 #[derive(DeriveIden)]
