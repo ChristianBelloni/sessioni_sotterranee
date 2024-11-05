@@ -7,7 +7,7 @@ use axum::extract::{
 use futures::{SinkExt, StreamExt};
 use models::*;
 
-mod models;
+pub mod models;
 mod state;
 
 pub use state::WSState;
@@ -16,6 +16,7 @@ pub async fn websocket(
     ws: WebSocketUpgrade,
     State(state): State<AppState>,
 ) -> impl IntoApiResponse {
+    tracing::info!("new ws connection");
     ws.on_upgrade(|socket| handle_socket(socket, state))
 }
 
@@ -87,6 +88,7 @@ async fn handle_socket(socket: WebSocket, state: AppState) {
 
         match msg {
             WebSocketMessage::SentMainChatMessage(new_message) => {
+                tracing::info!("recvd message {:?}", new_message);
                 sink.publish_others(Message::Text(
                     serde_json::to_string(&WebSocketMessage::PublishedMainChatMessage(
                         MainChatMessage {

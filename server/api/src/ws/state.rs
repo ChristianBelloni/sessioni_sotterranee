@@ -2,9 +2,11 @@ use axum::extract::ws::{self, WebSocket};
 use futures::stream::SplitSink;
 use futures::SinkExt;
 use futures::StreamExt;
+use service::sea_orm::DatabaseConnection;
 use tokio::sync::mpsc::Receiver;
 use tokio::sync::mpsc::Sender;
 
+use super::SendMainChatMessage;
 use super::WebSocketMessage;
 use std::{collections::HashMap, sync::Arc};
 
@@ -12,6 +14,8 @@ use std::{collections::HashMap, sync::Arc};
 pub struct WSState {
     pub sender: tokio::sync::mpsc::Sender<(i32, ws::Message)>,
     pub clients: Arc<tokio::sync::Mutex<HashMap<i32, SplitSink<WebSocket, ws::Message>>>>,
+    pub db: DatabaseConnection,
+    persistence_sender: Sender<SendMainChatMessage>,
 }
 
 pub struct ClientHandle<'a> {
@@ -32,14 +36,24 @@ impl ClientHandle<'_> {
 }
 
 impl WSState {
-    pub fn new() -> (Self, Receiver<(i32, ws::Message)>) {
+    pub fn new(
+        db: DatabaseConnection,
+    ) -> (
+        Self,
+        Receiver<(i32, ws::Message)>,
+        Receiver<SendMainChatMessage>,
+    ) {
         let (tx, rx) = tokio::sync::mpsc::channel(1024);
+        let (persistence_sender, persistence_rx) = tokio::sync::mpsc::channel(1024);
         (
             Self {
                 sender: tx,
+                persistence_sender,
                 clients: Default::default(),
+                db,
             },
             rx,
+            persistence_rx,
         )
     }
 
@@ -73,14 +87,34 @@ impl WSState {
     pub async fn run(
         self,
         mut rx: Receiver<(i32, ws::Message)>,
+        mut persistence_rx: Receiver<SendMainChatMessage>,
     ) -> Result<(), tokio::task::JoinError> {
-        tokio::spawn(async move {
+        let send_to_clients = tokio::spawn(async move {
             while let Some((user_id, next)) = rx.recv().await {
                 if let Some(handle) = self.clients.lock().await.get_mut(&user_id) {
                     _ = handle.send(next).await;
                 }
             }
-        })
-        .await
+        });
+
+        let connection = self.db.clone();
+
+        let persist_to_db = tokio::spawn(async move {
+            while let Some(next_message) = persistence_rx.recv().await {
+                _ = service::Mutation::insert_message(
+                    &connection,
+                    next_message.sender_id,
+                    next_message.message_text,
+                    next_message.date,
+                )
+                .await
+                .inspect_err(|e| tracing::error!(%e));
+            }
+        });
+
+        let (send_to_clients, persist_to_db) = tokio::join!(send_to_clients, persist_to_db);
+        send_to_clients?;
+        persist_to_db?;
+        Ok(())
     }
 }

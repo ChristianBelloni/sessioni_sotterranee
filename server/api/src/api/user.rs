@@ -1,30 +1,27 @@
 use crate::{
     error::Error,
-    models::{CompleteRegistrationRequest, Event, EventsForUser, User},
+    models::{CompleteRegistrationRequest, User},
     state::AppState,
 };
 use aide::{
     axum::{routing::*, ApiRouter as Router},
     transform::{TransformOperation, TransformParameter},
 };
-use axum::{
-    extract::{Path, Query, State},
-    Json,
-};
-use schemars::JsonSchema;
-use serde::Deserialize;
-use service::{sea_orm::DbErr, Mutation as DbMutation, Query as DbQuery};
+use axum::extract::{Json, Query, State};
+use service::{sea_orm::DbErr, Query as DbQuery};
 
 pub fn router(state: AppState) -> Router {
     Router::new()
-        .api_route(
-            "/set_username",
-            patch_with(complete_registration, complete_registration_docs),
-        )
+        .api_route("/me", get(get_username))
+        .api_route("/set_username", patch_with(set_username, set_username_docs))
         .with_state(state)
 }
 
-async fn complete_registration(
+async fn get_username(user: User) -> Result<Json<User>, Error> {
+    Ok(Json(user))
+}
+
+async fn set_username(
     State(state): State<AppState>,
     user: User,
     Query(CompleteRegistrationRequest { username }): Query<CompleteRegistrationRequest>,
@@ -40,8 +37,8 @@ async fn complete_registration(
     Ok(())
 }
 
-fn complete_registration_docs(op: TransformOperation) -> TransformOperation {
-    op.description("complete user registration")
+fn set_username_docs(op: TransformOperation) -> TransformOperation {
+    op.description("Set username")
         .parameter("id", move |transform: TransformParameter<'_, i32>| {
             transform.description("Event id")
         })

@@ -20,6 +20,7 @@ pub fn router(state: AppState) -> Router {
     Router::new()
         .nest_api_service("/events", event::router(state.clone()))
         .nest_api_service("/users", user::router(state.clone()))
+        .nest_api_service("/messages", main_chat::router(state.clone()))
         .route("/logto_wh", axum::routing::post(logto_wh))
         .with_state(state)
 }

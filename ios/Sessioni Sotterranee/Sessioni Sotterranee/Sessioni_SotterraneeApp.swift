@@ -12,9 +12,11 @@ import ComposableArchitecture
 struct Sessioni_SotterraneeApp: App {
     @Dependency(\.authClient) var authClient
     
+    var user = Shared(User())
+    
     var body: some Scene {
         WindowGroup {
-            AppView(store: Store(initialState: .init()) {
+            AppView(store: Store(initialState: .init(user: user, home: .init(user: user, mainChat: .init(user: user)))) {
                 AppFeature()
             }).ignoresSafeArea()
         }

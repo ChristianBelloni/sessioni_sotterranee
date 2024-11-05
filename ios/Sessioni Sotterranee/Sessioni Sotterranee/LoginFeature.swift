@@ -23,7 +23,7 @@ struct LoginFeature {
     
     enum Action {
         case LaunchLogin
-        case LoggedIn(String)
+        case LoggedIn(User)
         case RequiresUsername
         case UsernameChanged(String)
         case SetUsername
@@ -38,8 +38,10 @@ struct LoginFeature {
                 return .run { send in
                     do {
                         try await authClient.signIn()
-                        if let username = await authClient.username() {
-                            await send(.LoggedIn(username))
+                        if (await authClient.username()) != nil {
+                            let user = try await apiClient.get_sol_api_sol_users_sol_me().ok.body.json
+                            
+                            await send(.LoggedIn(User(id: Int(user.id), logtoId: user.log_to_id, username: user.username)))
                         } else {
                             await send(.RequiresUsername)
                         }
@@ -57,8 +59,9 @@ struct LoginFeature {
                 return .run { [username = state.username] send in
                     do {
                         _ = try await apiClient.patch_sol_api_sol_users_sol_set_username(query: .init(username: username)).ok
+                        let user = try await apiClient.get_sol_api_sol_users_sol_me().ok.body.json
                         
-                        await send(.LoggedIn(username))
+                        await send(.LoggedIn(User(id: Int(user.id), logtoId: user.log_to_id, username: user.username)))
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -74,6 +77,7 @@ struct LoginFeature {
 
 struct LoginView : View {
     @Dependency(\.authClient) var authClient
+    @Dependency(\.apiClient) var apiClient
     @Bindable var store: StoreOf<LoginFeature>
     
     var body: some View {
@@ -127,9 +131,11 @@ struct LoginView : View {
             Task {
                 
                 if authClient.isAuthenticated {
-                    
-                    if let username = await authClient.username() {
-                        store.send(.LoggedIn(username))
+                    if (await authClient.username()) != nil {
+                        let user = try await apiClient.get_sol_api_sol_users_sol_me().ok.body.json
+                        
+                        store.send(.LoggedIn(User(id: Int(user.id), logtoId: user.log_to_id, username: user.username)))
+                        
                     } else {
                         store.send(.RequiresUsername)
                     }

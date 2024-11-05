@@ -16,23 +16,18 @@ struct AppFeature {
     
     @ObservableState
     struct State: Equatable {
-        var authState: AuthState
-        var login: LoginFeature.State
+        
+        @Shared var user: User
+        
+        var authState: AuthState = .NotLogged
+        var login: LoginFeature.State = .init()
         var home: HomeFeature.State
-        init() {
-            let login: LoginFeature.State = .init()
-            let home: HomeFeature.State = .init()
-            self.authState = .NotLogged(.init())
-            self.login = login
-            self.home = home
-            
-        }
     }
     
     @ObservableState
     enum AuthState: Equatable {
-        case Logged(HomeFeature.State)
-        case NotLogged(LoginFeature.State)
+        case Logged
+        case NotLogged
     }
     
     enum Action {
@@ -52,15 +47,16 @@ struct AppFeature {
             switch action {
             case .loginFeature(let action):
                 switch action {
-                case .LoggedIn:
-                    state.authState = .Logged(.init())
+                case .LoggedIn(let user):
+                    state.home.user = user
+                    state.authState = .Logged
                 default:
                     return .none
                 }
             case .homeFeature(let action):
                 switch action {
                 case .Logout:
-                    state.authState = .NotLogged(.init())
+                    state.authState = .NotLogged
                     return .none
                 default:
                     return .none
@@ -79,16 +75,10 @@ struct AppView: View {
     
     var body: some View {
         switch store.authState {
-        case .Logged(let state):
+        case .Logged:
             HomeView(store: store.scope(state: \.home, action: \.homeFeature))
-        case .NotLogged(let state):
+        case .NotLogged:
             LoginView(store: store.scope(state: \.login, action: \.loginFeature))
         }
     }
-}
-
-#Preview {
-    AppView(store: Store(initialState: .init()) {
-        AppFeature()
-    })
 }

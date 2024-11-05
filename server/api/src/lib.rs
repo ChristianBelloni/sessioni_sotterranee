@@ -4,7 +4,7 @@ use axum_oidc::{error::MiddlewareError, EmptyAdditionalClaims, OidcAuthLayer};
 use docs::docs_routes;
 use extractors::{LogtoWebhookSecret, OidcValidationLayer};
 use futures::FutureExt;
-use logto_access_token::LogtoAuthenticatedClient;
+use logto_client::LogtoAuthenticatedClient;
 use migration::{Migrator, MigratorTrait};
 use oidc_jwt_validator::{cache::Strategy, ValidationSettings, Validator};
 use service::sea_orm::Database;
@@ -22,10 +22,10 @@ mod api;
 mod docs;
 mod error;
 pub(crate) mod extractors;
-mod logto_access_token;
+mod logto_client;
 pub mod models;
 mod state;
-mod ws;
+pub mod ws;
 
 #[tokio::main]
 pub async fn start() -> anyhow::Result<()> {
@@ -68,7 +68,7 @@ pub async fn start() -> anyhow::Result<()> {
 
     let mut o_api = OpenApi::default();
 
-    let (ws_state, ws_rx) = WSState::new();
+    let (ws_state, ws_rx, persistence_rx) = WSState::new(conn.clone());
 
     let (logto_client, refresher) = LogtoAuthenticatedClient::new(
         logto_endpoint,
@@ -142,7 +142,9 @@ pub async fn start() -> anyhow::Result<()> {
         axum::serve(listener, app)
             .into_future()
             .then(|a| async move { anyhow::Ok(a?) }),
-        ws_state.run(ws_rx).then(|a| async move { Ok(a?) }),
+        ws_state
+            .run(ws_rx, persistence_rx)
+            .then(|a| async move { Ok(a?) }),
         refresher.then(|a| async move { Ok(a) })
     )?;
 

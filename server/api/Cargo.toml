@@ -37,4 +37,6 @@ base64 = "0.22.1"
 hex = "0.4.3"
 oidc-jwt-validator = "0.2.3"
 jsonwebtoken = "9.3.0"
+serde-reflection = "0.4.0"
+serde-generate = "0.26.0"
 

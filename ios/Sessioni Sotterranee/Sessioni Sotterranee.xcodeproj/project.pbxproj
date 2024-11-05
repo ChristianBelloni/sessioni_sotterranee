@@ -12,6 +12,10 @@
 		B002383E2CD9683B009AF035 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = B002383D2CD9683B009AF035 /* OpenAPIRuntime */; };
 		B00238402CD96842009AF035 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = B002383F2CD96842009AF035 /* OpenAPIURLSession */; };
 		B00238432CD96859009AF035 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00238422CD96859009AF035 /* ApiClient.swift */; };
+		B095F50C2CDA366E007406A3 /* MainChatFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F50B2CDA366E007406A3 /* MainChatFeature.swift */; };
+		B095F50E2CDA37CC007406A3 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F50D2CDA37CC007406A3 /* WebSocketClient.swift */; };
+		B095F5122CDA4ACC007406A3 /* WebsocketModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F5112CDA4ACC007406A3 /* WebsocketModels.swift */; };
+		B095F5152CDA5122007406A3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F5142CDA5122007406A3 /* User.swift */; };
 		B0F66A272CD3E184000816F8 /* AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A262CD3E184000816F8 /* AuthClient.swift */; };
 		B0F66A292CD3E3B1000816F8 /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */; };
 		B0F66A2B2CD3E3CA000816F8 /* LoginFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A2A2CD3E3CA000816F8 /* LoginFeature.swift */; };
@@ -48,6 +52,10 @@
 		B00238222CD95B00009AF035 /* openapi-generator-config.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "openapi-generator-config.yaml"; sourceTree = "<group>"; };
 		B002383A2CD965E1009AF035 /* openapi.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = openapi.yaml; sourceTree = "<group>"; };
 		B00238422CD96859009AF035 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		B095F50B2CDA366E007406A3 /* MainChatFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainChatFeature.swift; sourceTree = "<group>"; };
+		B095F50D2CDA37CC007406A3 /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
+		B095F5112CDA4ACC007406A3 /* WebsocketModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsocketModels.swift; sourceTree = "<group>"; };
+		B095F5142CDA5122007406A3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B0F66A262CD3E184000816F8 /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
 		B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
 		B0F66A2A2CD3E3CA000816F8 /* LoginFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeature.swift; sourceTree = "<group>"; };
@@ -93,6 +101,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B095F5102CDA4AC2007406A3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B095F5112CDA4ACC007406A3 /* WebsocketModels.swift */,
+				B095F5142CDA5122007406A3 /* User.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B0F6A7002CD3BED1008E1455 = {
 			isa = PBXGroup;
 			children = (
@@ -120,12 +137,15 @@
 				B002383A2CD965E1009AF035 /* openapi.yaml */,
 				B0F6A70C2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift */,
 				B0F6A70E2CD3BED1008E1455 /* AppFeature.swift */,
+				B095F50B2CDA366E007406A3 /* MainChatFeature.swift */,
 				B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */,
 				B0F66A2A2CD3E3CA000816F8 /* LoginFeature.swift */,
+				B095F5102CDA4AC2007406A3 /* Models */,
 				B0F6A7122CD3BED2008E1455 /* Assets.xcassets */,
 				B0F6A7142CD3BED2008E1455 /* Preview Content */,
 				B0F66A262CD3E184000816F8 /* AuthClient.swift */,
 				B00238422CD96859009AF035 /* ApiClient.swift */,
+				B095F50D2CDA37CC007406A3 /* WebSocketClient.swift */,
 				B00238222CD95B00009AF035 /* openapi-generator-config.yaml */,
 			);
 			path = "Sessioni Sotterranee";
@@ -311,10 +331,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0F6A70F2CD3BED1008E1455 /* AppFeature.swift in Sources */,
+				B095F50C2CDA366E007406A3 /* MainChatFeature.swift in Sources */,
 				B0F66A292CD3E3B1000816F8 /* HomeFeature.swift in Sources */,
 				B0F66A2B2CD3E3CA000816F8 /* LoginFeature.swift in Sources */,
+				B095F5122CDA4ACC007406A3 /* WebsocketModels.swift in Sources */,
 				B0F66A272CD3E184000816F8 /* AuthClient.swift in Sources */,
 				B0F6A70D2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift in Sources */,
+				B095F50E2CDA37CC007406A3 /* WebSocketClient.swift in Sources */,
+				B095F5152CDA5122007406A3 /* User.swift in Sources */,
 				B00238432CD96859009AF035 /* ApiClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

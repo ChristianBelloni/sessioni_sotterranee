@@ -5,19 +5,11 @@ use aide::{
     operation::add_parameters,
     OperationInput,
 };
-use axum::{
-    async_trait,
-    body::Bytes,
-    extract::{FromRequest, FromRequestParts, Request},
-    http::request::Parts,
-    Extension, RequestExt, RequestPartsExt,
-};
+use axum::{async_trait, extract::FromRequestParts, http::request::Parts};
 
-use axum_oidc::{EmptyAdditionalClaims, OidcClaims};
 use jsonwebtoken::TokenData;
-use migration::{DbErr, ExprTrait};
-use oidc_jwt_validator::{ValidationSettings, Validator};
-use reqwest::Client;
+use migration::DbErr;
+use oidc_jwt_validator::Validator;
 
 use crate::{models::User, state::AppState};
 use service::Query as DbQuery;
@@ -26,10 +18,7 @@ mod logto_wh;
 
 pub use logto_wh::*;
 
-#[derive(Clone)]
-pub struct JwtClaims(pub OidcClaims<EmptyAdditionalClaims>);
-
-impl OperationInput for JwtClaims {
+impl OperationInput for OidcToken {
     fn operation_input(ctx: &mut aide::gen::GenContext, operation: &mut aide::openapi::Operation) {
         let s = ctx.schema.subschema_for::<String>();
         add_parameters(
@@ -61,19 +50,7 @@ impl OperationInput for JwtClaims {
 
 impl OperationInput for User {
     fn operation_input(ctx: &mut aide::gen::GenContext, operation: &mut aide::openapi::Operation) {
-        JwtClaims::operation_input(ctx, operation)
-    }
-}
-
-#[async_trait]
-impl<T> FromRequestParts<T> for JwtClaims
-where
-    OidcClaims<EmptyAdditionalClaims>: FromRequestParts<T>,
-    T: Send + Sync + 'static,
-{
-    type Rejection = <OidcClaims<EmptyAdditionalClaims> as FromRequestParts<T>>::Rejection;
-    async fn from_request_parts(parts: &mut Parts, state: &T) -> Result<Self, Self::Rejection> {
-        Ok(Self(OidcClaims::from_request_parts(parts, state).await?))
+        OidcToken::operation_input(ctx, operation)
     }
 }
 

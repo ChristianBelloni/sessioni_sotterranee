@@ -103,9 +103,32 @@ paths:
           description: ""
         "404":
           description: ""
+  /api/users/me:
+    get:
+      parameters:
+        - in: header
+          name: Authorization
+          description: Jwt Bearer token
+          required: true
+          schema:
+            type: string
+          style: simple
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "500":
+          description: ""
+        "401":
+          description: ""
+        "404":
+          description: ""
   /api/users/set_username:
     patch:
-      description: complete user registration
+      description: Set username
       parameters:
         - in: header
           name: Authorization
@@ -129,6 +152,28 @@ paths:
           description: ""
         "404":
           description: ""
+  /api/messages/:
+    get:
+      parameters:
+        - in: query
+          name: limit
+          required: true
+          schema:
+            type: integer
+            format: uint64
+            minimum: 0
+          style: form
+        - in: query
+          name: offset
+          required: true
+          schema:
+            type: integer
+            format: uint64
+            minimum: 0
+          style: form
+      responses:
+        "200":
+          description: no content
   /ws:
     get:
       responses:
@@ -231,6 +276,17 @@ components:
           type: integer
           format: uint64
           minimum: 0
+    Role:
+      type: object
+      required:
+        - description
+        - id
+      properties:
+        description:
+          type: string
+        id:
+          type: integer
+          format: int32
     SelectEvent:
       type: object
       required:
@@ -239,3 +295,22 @@ components:
         id:
           type: integer
           format: int32
+    User:
+      type: object
+      required:
+        - id
+        - log_to_id
+        - roles
+        - username
+      properties:
+        id:
+          type: integer
+          format: int32
+        log_to_id:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        username:
+          type: string

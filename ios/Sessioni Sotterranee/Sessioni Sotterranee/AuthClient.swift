@@ -17,18 +17,9 @@ struct LogtoAuthClient: AuthClient {
     func intercept(_ request: HTTPTypes.HTTPRequest, body: OpenAPIRuntime.HTTPBody?, baseURL: URL, operationID: String, next: @Sendable (HTTPTypes.HTTPRequest, OpenAPIRuntime.HTTPBody?, URL) async throws -> (HTTPTypes.HTTPResponse, OpenAPIRuntime.HTTPBody?)) async throws -> (HTTPTypes.HTTPResponse, OpenAPIRuntime.HTTPBody?) {
         
         var request = request
-        
-                // Adds the `Authorization` header field with the provided value.
-        let value = try! await self.client.idToken!
-        
-        let token = try! self.client.getIdTokenClaims()
+        if let value = self.client.idToken {
             request.headerFields[.authorization] = "Bearer \(value)"
-            do{
-                let result = try await URLSession.shared.data(for: URLRequest(url: URL(string: "https://lecl3f.logto.app/api")!))
-            } catch {
-                print(error.localizedDescription)
-            }
-            
+        }
         
         return try await next(request, body, baseURL)
     }
