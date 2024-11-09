@@ -32,7 +32,9 @@ impl ClientHandle<'_> {
         self.sender.send((self.user_id, value)).await
     }
 
-    pub async fn publish_others(&self, value: ws::Message) {}
+    pub async fn publish_others(&self, value: ws::Message) {
+        self.state.publish_others(self.user_id, value).await
+    }
 }
 
 impl WSState {
@@ -75,13 +77,24 @@ impl WSState {
         let others = lock.iter_mut().filter(|(&id, _)| id != sender);
 
         futures::stream::iter(others)
-            .for_each_concurrent(None, move |(_, client)| {
+            .for_each_concurrent(None, move |(id, client)| {
                 let value = value.clone();
+                tracing::info!("sending msg to {id} {value:?}");
                 async move {
-                    _ = client.send(value.clone()).await;
+                    _ = client
+                        .send(value.clone())
+                        .await
+                        .inspect_err(|e| tracing::error!(%e));
                 }
             })
             .await;
+    }
+
+    pub async fn remove_client(&self, id: i32) {
+        let sender = self.clients.lock().await.remove(&id);
+        if let Some(mut sender) = sender {
+            _ = sender.send(ws::Message::Close(None)).await;
+        }
     }
 
     pub async fn run(

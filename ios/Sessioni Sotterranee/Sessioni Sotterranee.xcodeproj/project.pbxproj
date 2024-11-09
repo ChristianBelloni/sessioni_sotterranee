@@ -12,15 +12,19 @@
 		B002383E2CD9683B009AF035 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = B002383D2CD9683B009AF035 /* OpenAPIRuntime */; };
 		B00238402CD96842009AF035 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = B002383F2CD96842009AF035 /* OpenAPIURLSession */; };
 		B00238432CD96859009AF035 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00238422CD96859009AF035 /* ApiClient.swift */; };
-		B095F50C2CDA366E007406A3 /* MainChatFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F50B2CDA366E007406A3 /* MainChatFeature.swift */; };
 		B095F50E2CDA37CC007406A3 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F50D2CDA37CC007406A3 /* WebSocketClient.swift */; };
 		B095F5122CDA4ACC007406A3 /* WebsocketModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F5112CDA4ACC007406A3 /* WebsocketModels.swift */; };
 		B095F5152CDA5122007406A3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F5142CDA5122007406A3 /* User.swift */; };
-		B0F66A272CD3E184000816F8 /* AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A262CD3E184000816F8 /* AuthClient.swift */; };
-		B0F66A292CD3E3B1000816F8 /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */; };
-		B0F66A2B2CD3E3CA000816F8 /* LoginFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A2A2CD3E3CA000816F8 /* LoginFeature.swift */; };
+		B095F5192CDA80C7007406A3 /* LoginFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F5182CDA80C7007406A3 /* LoginFeature.swift */; };
+		B095F51B2CDA89DE007406A3 /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F51A2CDA89DE007406A3 /* AppFeature.swift */; };
+		B095F51E2CDA8B25007406A3 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F51D2CDA8B25007406A3 /* Event.swift */; };
+		B095F5222CDA8C5C007406A3 /* MainChatFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F5212CDA8C5C007406A3 /* MainChatFeature.swift */; };
+		B095F5262CDAA24A007406A3 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = B095F5252CDAA24A007406A3 /* Collections */; };
+		B095F5282CDAA24A007406A3 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = B095F5272CDAA24A007406A3 /* OrderedCollections */; };
+		B095F52E2CDACD37007406A3 /* HomeFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B095F52D2CDACD37007406A3 /* HomeFeature.swift */; };
+		B0F66A272CD3E184000816F8 /* AuthMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F66A262CD3E184000816F8 /* AuthMiddleware.swift */; };
 		B0F6A70D2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6A70C2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift */; };
-		B0F6A70F2CD3BED1008E1455 /* AppFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6A70E2CD3BED1008E1455 /* AppFeature.swift */; };
+		B0F6A70F2CD3BED1008E1455 /* RootFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6A70E2CD3BED1008E1455 /* RootFeature.swift */; };
 		B0F6A7132CD3BED2008E1455 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0F6A7122CD3BED2008E1455 /* Assets.xcassets */; };
 		B0F6A7162CD3BED2008E1455 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0F6A7152CD3BED2008E1455 /* Preview Assets.xcassets */; };
 		B0F6A7202CD3BED2008E1455 /* Sessioni_SotterraneeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0F6A71F2CD3BED2008E1455 /* Sessioni_SotterraneeTests.swift */; };
@@ -52,16 +56,18 @@
 		B00238222CD95B00009AF035 /* openapi-generator-config.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "openapi-generator-config.yaml"; sourceTree = "<group>"; };
 		B002383A2CD965E1009AF035 /* openapi.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = openapi.yaml; sourceTree = "<group>"; };
 		B00238422CD96859009AF035 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
-		B095F50B2CDA366E007406A3 /* MainChatFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainChatFeature.swift; sourceTree = "<group>"; };
 		B095F50D2CDA37CC007406A3 /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
 		B095F5112CDA4ACC007406A3 /* WebsocketModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebsocketModels.swift; sourceTree = "<group>"; };
 		B095F5142CDA5122007406A3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		B0F66A262CD3E184000816F8 /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
-		B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
-		B0F66A2A2CD3E3CA000816F8 /* LoginFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeature.swift; sourceTree = "<group>"; };
+		B095F5182CDA80C7007406A3 /* LoginFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginFeature.swift; sourceTree = "<group>"; };
+		B095F51A2CDA89DE007406A3 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
+		B095F51D2CDA8B25007406A3 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		B095F5212CDA8C5C007406A3 /* MainChatFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainChatFeature.swift; sourceTree = "<group>"; };
+		B095F52D2CDACD37007406A3 /* HomeFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeature.swift; sourceTree = "<group>"; };
+		B0F66A262CD3E184000816F8 /* AuthMiddleware.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthMiddleware.swift; sourceTree = "<group>"; };
 		B0F6A7092CD3BED1008E1455 /* Sessioni Sotterranee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sessioni Sotterranee.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B0F6A70C2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sessioni_SotterraneeApp.swift; sourceTree = "<group>"; };
-		B0F6A70E2CD3BED1008E1455 /* AppFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFeature.swift; sourceTree = "<group>"; };
+		B0F6A70E2CD3BED1008E1455 /* RootFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootFeature.swift; sourceTree = "<group>"; };
 		B0F6A7122CD3BED2008E1455 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B0F6A7152CD3BED2008E1455 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B0F6A71B2CD3BED2008E1455 /* Sessioni SotterraneeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Sessioni SotterraneeTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,10 +82,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B095F5262CDAA24A007406A3 /* Collections in Frameworks */,
 				B0F6A73C2CD3C004008E1455 /* Logto in Frameworks */,
 				B0F6A73E2CD3C004008E1455 /* LogtoClient in Frameworks */,
 				B002383E2CD9683B009AF035 /* OpenAPIRuntime in Frameworks */,
 				B00238402CD96842009AF035 /* OpenAPIURLSession in Frameworks */,
+				B095F5282CDAA24A007406A3 /* OrderedCollections in Frameworks */,
 				B0F6A7402CD3C004008E1455 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,8 +114,27 @@
 			children = (
 				B095F5112CDA4ACC007406A3 /* WebsocketModels.swift */,
 				B095F5142CDA5122007406A3 /* User.swift */,
+				B095F51D2CDA8B25007406A3 /* Event.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B095F5292CDACC68007406A3 /* AppFeature */ = {
+			isa = PBXGroup;
+			children = (
+				B095F5302CDACD4B007406A3 /* HomeFeature */,
+				B095F51A2CDA89DE007406A3 /* AppFeature.swift */,
+			);
+			path = AppFeature;
+			sourceTree = "<group>";
+		};
+		B095F5302CDACD4B007406A3 /* HomeFeature */ = {
+			isa = PBXGroup;
+			children = (
+				B095F52D2CDACD37007406A3 /* HomeFeature.swift */,
+				B095F5212CDA8C5C007406A3 /* MainChatFeature.swift */,
+			);
+			path = HomeFeature;
 			sourceTree = "<group>";
 		};
 		B0F6A7002CD3BED1008E1455 = {
@@ -136,14 +163,13 @@
 			children = (
 				B002383A2CD965E1009AF035 /* openapi.yaml */,
 				B0F6A70C2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift */,
-				B0F6A70E2CD3BED1008E1455 /* AppFeature.swift */,
-				B095F50B2CDA366E007406A3 /* MainChatFeature.swift */,
-				B0F66A282CD3E3B1000816F8 /* HomeFeature.swift */,
-				B0F66A2A2CD3E3CA000816F8 /* LoginFeature.swift */,
+				B0F6A70E2CD3BED1008E1455 /* RootFeature.swift */,
+				B095F5292CDACC68007406A3 /* AppFeature */,
+				B095F5182CDA80C7007406A3 /* LoginFeature.swift */,
 				B095F5102CDA4AC2007406A3 /* Models */,
 				B0F6A7122CD3BED2008E1455 /* Assets.xcassets */,
 				B0F6A7142CD3BED2008E1455 /* Preview Content */,
-				B0F66A262CD3E184000816F8 /* AuthClient.swift */,
+				B0F66A262CD3E184000816F8 /* AuthMiddleware.swift */,
 				B00238422CD96859009AF035 /* ApiClient.swift */,
 				B095F50D2CDA37CC007406A3 /* WebSocketClient.swift */,
 				B00238222CD95B00009AF035 /* openapi-generator-config.yaml */,
@@ -206,6 +232,8 @@
 				B0F6A73F2CD3C004008E1455 /* ComposableArchitecture */,
 				B002383D2CD9683B009AF035 /* OpenAPIRuntime */,
 				B002383F2CD96842009AF035 /* OpenAPIURLSession */,
+				B095F5252CDAA24A007406A3 /* Collections */,
+				B095F5272CDAA24A007406A3 /* OrderedCollections */,
 			);
 			productName = "Sessioni Sotterranee";
 			productReference = B0F6A7092CD3BED1008E1455 /* Sessioni Sotterranee.app */;
@@ -285,6 +313,7 @@
 				B00238242CD95BDA009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
 				B00238252CD95BFE009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
 				B00238262CD95C1C009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
+				B095F5232CDAA23B007406A3 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = B0F6A70A2CD3BED1008E1455 /* Products */;
 			projectDirPath = "";
@@ -330,15 +359,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0F6A70F2CD3BED1008E1455 /* AppFeature.swift in Sources */,
-				B095F50C2CDA366E007406A3 /* MainChatFeature.swift in Sources */,
-				B0F66A292CD3E3B1000816F8 /* HomeFeature.swift in Sources */,
-				B0F66A2B2CD3E3CA000816F8 /* LoginFeature.swift in Sources */,
+				B0F6A70F2CD3BED1008E1455 /* RootFeature.swift in Sources */,
 				B095F5122CDA4ACC007406A3 /* WebsocketModels.swift in Sources */,
-				B0F66A272CD3E184000816F8 /* AuthClient.swift in Sources */,
+				B095F5192CDA80C7007406A3 /* LoginFeature.swift in Sources */,
+				B095F51B2CDA89DE007406A3 /* AppFeature.swift in Sources */,
+				B095F51E2CDA8B25007406A3 /* Event.swift in Sources */,
+				B0F66A272CD3E184000816F8 /* AuthMiddleware.swift in Sources */,
 				B0F6A70D2CD3BED1008E1455 /* Sessioni_SotterraneeApp.swift in Sources */,
 				B095F50E2CDA37CC007406A3 /* WebSocketClient.swift in Sources */,
 				B095F5152CDA5122007406A3 /* User.swift in Sources */,
+				B095F52E2CDACD37007406A3 /* HomeFeature.swift in Sources */,
+				B095F5222CDA8C5C007406A3 /* MainChatFeature.swift in Sources */,
 				B00238432CD96859009AF035 /* ApiClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -699,6 +730,14 @@
 				minimumVersion = 1.0.2;
 			};
 		};
+		B095F5232CDAA23B007406A3 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.4;
+			};
+		};
 		B0F6A7382CD3BF00008E1455 /* XCRemoteSwiftPackageReference "swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/logto-io/swift.git";
@@ -732,6 +771,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B00238262CD95C1C009AF035 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */;
 			productName = OpenAPIURLSession;
+		};
+		B095F5252CDAA24A007406A3 /* Collections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B095F5232CDAA23B007406A3 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = Collections;
+		};
+		B095F5272CDAA24A007406A3 /* OrderedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B095F5232CDAA23B007406A3 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = OrderedCollections;
 		};
 		B0F6A73B2CD3C004008E1455 /* Logto */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -10,15 +10,18 @@ import ComposableArchitecture
 
 @main
 struct Sessioni_SotterraneeApp: App {
-    @Dependency(\.authClient) var authClient
-    
-    var user = Shared(User())
+    @Dependency(\.apiClient) var apiClient
     
     var body: some Scene {
         WindowGroup {
-            AppView(store: Store(initialState: .init(user: user, home: .init(user: user, mainChat: .init(user: user)))) {
-                AppFeature()
-            }).ignoresSafeArea()
+            RootView(store: Store(initialState: RootFeature.initialState(user: apiClient.user)) {
+                RootFeature()
+            })
+            .ignoresSafeArea().task {
+                do {
+                    _ = try await apiClient.getUser()
+                } catch { }
+            }
         }
     }
 }

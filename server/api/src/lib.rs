@@ -66,6 +66,8 @@ pub async fn start() -> anyhow::Result<()> {
         .expect("Database connection failed");
     Migrator::up(&conn, None).await.unwrap();
 
+    // service::insert_test_data(&conn).await;
+
     let mut o_api = OpenApi::default();
 
     let (ws_state, ws_rx, persistence_rx) = WSState::new(conn.clone());

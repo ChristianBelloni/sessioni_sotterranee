@@ -8,7 +8,7 @@
 import Foundation
 
 @Observable
-class User : Equatable {
+final class User : Equatable, Sendable {
     static func == (lhs: User, rhs: User) -> Bool {
         lhs.id == rhs.id
     }

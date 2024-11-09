@@ -89,6 +89,13 @@ async fn handle_socket(socket: WebSocket, state: AppState) {
         match msg {
             WebSocketMessage::SentMainChatMessage(new_message) => {
                 tracing::info!("recvd message {:?}", new_message);
+                _ = service::Mutation::insert_message(
+                    &state.db,
+                    new_message.sender_id,
+                    new_message.message_text.clone(),
+                    new_message.date,
+                )
+                .await;
                 sink.publish_others(Message::Text(
                     serde_json::to_string(&WebSocketMessage::PublishedMainChatMessage(
                         MainChatMessage {
@@ -148,4 +155,7 @@ async fn handle_socket(socket: WebSocket, state: AppState) {
             }
         }
     }
+    tracing::info!("removing client");
+
+    state.ws_state.remove_client(user_id).await;
 }

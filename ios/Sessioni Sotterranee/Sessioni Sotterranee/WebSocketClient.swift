@@ -7,76 +7,105 @@
 
 import Foundation
 import ComposableArchitecture
+import Combine
 
 protocol WebSocketClientProtocol {
     func connect() async
-    func identifyClient(userId: Int) async throws
-    func receiveMessage() async throws -> String?
-    func sendMessage(user: User, message: String) async throws
-    var isConnected: Bool { get }
+    
+    func registerClient(userId: Int) async throws
+    
+    func subscribe(onReceive: @MainActor @escaping (WebsocketMessage) -> Void)
+    
+    func sendMessage(user: User, text: String) async throws
+    
+    func disconnect()
 }
 
-class WebSocketClient: NSObject, WebSocketClientProtocol, URLSessionWebSocketDelegate {
-    var isConnected: Bool = false
-    
-    func sendMessage(user: User, message: String) async throws {
-        let msg = Coordinate(identifyClient: nil, sentMainChatMessage: SendMainChatMessage(date: Date.now, messageText: message, senderID: user.id), publishedMainChatMessage: nil, requestMainChatHistory: nil, publishedMainChatHistory: nil)
-        try await task.send(.string(try msg.jsonString()!))
-    }
-    
-    let task: URLSessionWebSocketTask
+struct WebSocketClient {
+    var task: URLSessionWebSocketTask
+    var stream: PassthroughSubject<WebsocketMessage, Never>
+    private var cancellables: LockIsolated<Set<AnyCancellable>> = .init([])
+    var isConnected: LockIsolated<Bool> = .init(false)
     
     init(url: URL) {
-        task = URLSession.shared.webSocketTask(with: url)
-        
-        super.init()
-        task.delegate = self
+        self.task = URLSession.shared.webSocketTask(with: url)
+        self.stream = .init()
     }
     
-    func connect() async {
-        task.resume()
-        await withCheckedContinuation { continuation in
-            self.onConnect = { _ in
-                continuation.resume()
+    func openStream() {
+        Task {
+            while self.task.state == .running {
+                let result = try await self.task.receive()
+                switch result {
+                case .data(let data):
+                    if let msg = try? WebsocketMessage(data: data) {
+                        stream.send(msg)
+                    }
+                case .string(let string):
+                    if let msg = try? WebsocketMessage(string) {
+                        stream.send(msg)
+                    }
+                @unknown default:
+                    return
+                }
             }
         }
     }
+}
+
+extension WebSocketClient : WebSocketClientProtocol {
     
-    func identifyClient(userId: Int) async throws {
-        let message = Coordinate.init(identifyClient: IdentifyClient(userID: userId), sentMainChatMessage: nil, publishedMainChatMessage: nil, requestMainChatHistory: nil, publishedMainChatHistory: nil)
-        try await task.send(.string(try message.jsonString()!))
-    }
-    
-    func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
-        self.onConnect(nil)
-        self.isConnected = true
-    }
-    
-    var onConnect: ((any Error)?) -> Void = { _ in }
-    
-    func receiveMessage() async throws -> String? {
+    class Delegate: NSObject, URLSessionWebSocketDelegate {
+        var continuation: CheckedContinuation<Void, Never>
+        init(continuation: CheckedContinuation<Void, Never>) {
+            self.continuation = continuation
+        }
         
-        switch try await task.receive() {
-        case .data(let data):
-            String(data: data, encoding: .utf8)
-        case .string(let data):
-            data
-        @unknown default:
-            fatalError("unexpected message kind")
+        func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
+            continuation.resume()
         }
     }
     
+    func connect() async {
+        if isConnected.value {
+            return
+        }
+        await withCheckedContinuation { continuation in
+            let delegate = Delegate(continuation: continuation)
+            self.task.delegate = delegate
+            self.task.resume()
+        }
+        isConnected.withValue({ $0 = true })
+        self.openStream()
+    }
     
+    func registerClient(userId: Int) async throws {
+        try await self.task.send(.string(try WebsocketMessage.identifyClient(userID: userId).jsonString()!))
+    }
+    
+    func subscribe(onReceive: @MainActor @escaping (WebsocketMessage) -> Void) {
+        cancellables.withValue({ inner in
+            self.stream.receive(on: DispatchQueue.main).sink { msg in MainActor.assumeIsolated { onReceive(msg) } }.store(in: &inner)
+        })
+        
+    }
+    
+    func sendMessage(user: User, text: String) async throws {
+        try await self.task.send(try .string(WebsocketMessage.sentMainChatMessage(senderID: user.id, messageText: text, date: Date.now).jsonString()!))
+    }
+    
+    func disconnect() {
+        task.cancel()
+    }
 }
 
-
-private enum WebSocketClientKey: DependencyKey{
-    static let liveValue: any WebSocketClientProtocol = WebSocketClient(url: URL(string:"ws://localhost:8080/ws")!)
+fileprivate enum WebSocketClientKey : DependencyKey {
+    static let liveValue: any WebSocketClientProtocol = WebSocketClient(url: URL(string: "ws://localhost:8080/ws")!)
 }
 
 extension DependencyValues {
-    var webSocketClient: WebSocketClientProtocol {
+    var websocketClient: WebSocketClientProtocol {
         get { self[WebSocketClientKey.self] }
         set { self[WebSocketClientKey.self] = newValue }
-      }
+    }
 }

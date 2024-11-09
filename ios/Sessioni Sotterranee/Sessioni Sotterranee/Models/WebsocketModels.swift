@@ -1,7 +1,7 @@
 // This file was generated from JSON Schema using quicktype, do not modify it directly.
 // To parse the JSON, add this file to your project and do:
 //
-//   let coordinate = try Coordinate(json)
+//   let WebsocketMessage = try WebsocketMessage(json)
 
 //
 // Hashable or Equatable:
@@ -11,8 +11,8 @@
 
 import Foundation
 
-// MARK: - Coordinate
-public struct Coordinate: Codable, Equatable, Sendable {
+// MARK: - WebsocketMessage
+public struct WebsocketMessage: Codable, Equatable, Sendable, Hashable {
     public let identifyClient: IdentifyClient?
     public let sentMainChatMessage: SendMainChatMessage?
     public let publishedMainChatMessage: MainChatMessage?
@@ -36,11 +36,20 @@ public struct Coordinate: Codable, Equatable, Sendable {
     }
 }
 
-// MARK: Coordinate convenience initializers and mutators
+// MARK: WebsocketMessage convenience initializers and mutators
 
-public extension Coordinate {
+public extension WebsocketMessage {
+    
+    static func identifyClient(userID: Int) -> Self {
+        WebsocketMessage(identifyClient: IdentifyClient(userID: userID), sentMainChatMessage: nil, publishedMainChatMessage: nil, requestMainChatHistory: nil, publishedMainChatHistory: nil)
+    }
+    
+    static func sentMainChatMessage(senderID: Int, messageText: String, date: Date) -> Self {
+        .init(identifyClient: nil, sentMainChatMessage: .init(date: date, messageText: messageText, senderID: senderID), publishedMainChatMessage: nil, requestMainChatHistory: nil, publishedMainChatHistory: nil)
+    }
+    
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(Coordinate.self, from: data)
+        self = try newJSONDecoder().decode(WebsocketMessage.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -60,8 +69,8 @@ public extension Coordinate {
         publishedMainChatMessage: MainChatMessage?? = nil,
         requestMainChatHistory: RequestMainChatHistory?? = nil,
         publishedMainChatHistory: PublishedMainchatHistory?? = nil
-    ) -> Coordinate {
-        return Coordinate(
+    ) -> WebsocketMessage {
+        return WebsocketMessage(
             identifyClient: identifyClient ?? self.identifyClient,
             sentMainChatMessage: sentMainChatMessage ?? self.sentMainChatMessage,
             publishedMainChatMessage: publishedMainChatMessage ?? self.publishedMainChatMessage,
@@ -86,7 +95,7 @@ public extension Coordinate {
 // synthesized for types that have collections (such as arrays or dictionaries).
 
 // MARK: - IdentifyClient
-public struct IdentifyClient: Codable, Equatable, Sendable {
+public struct IdentifyClient: Codable, Equatable, Sendable, Hashable {
     public let userID: Int
 
     public enum CodingKeys: String, CodingKey {
@@ -140,7 +149,7 @@ public extension IdentifyClient {
 // synthesized for types that have collections (such as arrays or dictionaries).
 
 // MARK: - PublishedMainchatHistory
-public struct PublishedMainchatHistory: Codable, Equatable, Sendable {
+public struct PublishedMainchatHistory: Codable, Equatable, Sendable, Hashable {
     public let messages: [MainChatMessage]
     public let userID: Int
 
@@ -199,7 +208,8 @@ public extension PublishedMainchatHistory {
 // synthesized for types that have collections (such as arrays or dictionaries).
 
 // MARK: - MainChatMessage
-public struct MainChatMessage: Codable, Equatable, Sendable {
+public struct MainChatMessage: Codable, Equatable, Sendable, Hashable {
+    
     public let date: Date
     public let messageText: String
     public let sender: MessageSenderUsername
@@ -256,7 +266,7 @@ public extension MainChatMessage {
     }
 }
 
-public enum MessageSenderUsername: Codable, Equatable, Sendable {
+public enum MessageSenderUsername: Codable, Equatable, Sendable, Hashable {
     case enumeration(MessageSenderUsernameEnum)
     case messageSenderUsernameClass(MessageSenderUsernameClass)
 
@@ -291,7 +301,7 @@ public enum MessageSenderUsername: Codable, Equatable, Sendable {
 // synthesized for types that have collections (such as arrays or dictionaries).
 
 // MARK: - MessageSenderUsernameClass
-public struct MessageSenderUsernameClass: Codable, Equatable, Sendable {
+public struct MessageSenderUsernameClass: Codable, Equatable, Sendable, Hashable {
     public let other: String
 
     public enum CodingKeys: String, CodingKey {
@@ -338,7 +348,7 @@ public extension MessageSenderUsernameClass {
     }
 }
 
-public enum MessageSenderUsernameEnum: String, Codable, Equatable, Sendable {
+public enum MessageSenderUsernameEnum: String, Codable, Equatable, Sendable, Hashable {
     case me = "Me"
 }
 
@@ -349,7 +359,7 @@ public enum MessageSenderUsernameEnum: String, Codable, Equatable, Sendable {
 // synthesized for types that have collections (such as arrays or dictionaries).
 
 // MARK: - RequestMainChatHistory
-public struct RequestMainChatHistory: Codable, Equatable, Sendable {
+public struct RequestMainChatHistory: Codable, Equatable, Sendable, Hashable {
     public let userID: Int
 
     public enum CodingKeys: String, CodingKey {
@@ -403,7 +413,7 @@ public extension RequestMainChatHistory {
 // synthesized for types that have collections (such as arrays or dictionaries).
 
 // MARK: - SendMainChatMessage
-public struct SendMainChatMessage: Codable, Equatable, Sendable {
+public struct SendMainChatMessage: Codable, Equatable, Sendable, Hashable {
     public let date: Date
     public let messageText: String
     public let senderID: Int
