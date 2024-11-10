@@ -10,7 +10,7 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
-		7555FF83242A565900829871 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* AppView.swift */; };
+		7555FF83242A565900829871 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* RootView.swift */; };
 		B03697132CDCFBBE00ABCF7F /* KMPObservableViewModelCore in Frameworks */ = {isa = PBXBuildFile; productRef = B03697122CDCFBBE00ABCF7F /* KMPObservableViewModelCore */; };
 		B03697152CDCFBBE00ABCF7F /* KMPObservableViewModelSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = B03697142CDCFBBE00ABCF7F /* KMPObservableViewModelSwiftUI */; };
 		B03697182CDCFE7C00ABCF7F /* KMPNativeCoroutinesCombine in Frameworks */ = {isa = PBXBuildFile; productRef = B03697172CDCFE7C00ABCF7F /* KMPNativeCoroutinesCombine */; };
@@ -20,6 +20,13 @@
 		B0D1492B2CDFB0F2007963F9 /* Logto in Frameworks */ = {isa = PBXBuildFile; productRef = B0D1492A2CDFB0F2007963F9 /* Logto */; };
 		B0D1492D2CDFB0F2007963F9 /* LogtoClient in Frameworks */ = {isa = PBXBuildFile; productRef = B0D1492C2CDFB0F2007963F9 /* LogtoClient */; };
 		B0D1492F2CDFB419007963F9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1492E2CDFB416007963F9 /* LoginView.swift */; };
+		B0D149312CDFE782007963F9 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D149302CDFE780007963F9 /* HomeView.swift */; };
+		B0D149342CDFE8E5007963F9 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D149332CDFE8E2007963F9 /* AppView.swift */; };
+		B0D149382CE0F349007963F9 /* BottomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D149372CE0F349007963F9 /* BottomTabBar.swift */; };
+		B0D1493C2CE112E4007963F9 /* FeaturedEventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1493B2CE112E0007963F9 /* FeaturedEventsView.swift */; };
+		B0D1493E2CE11445007963F9 /* ChatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1493D2CE11445007963F9 /* ChatsView.swift */; };
+		B0D149402CE11950007963F9 /* PageTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D1493F2CE11950007963F9 /* PageTitleView.swift */; };
+		B0D149422CE119D2007963F9 /* HomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D149412CE119D2007963F9 /* HomePageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,12 +34,19 @@
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* Sessioni Sotterranee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sessioni Sotterranee.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7555FF82242A565900829871 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		7555FF82242A565900829871 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		B036971B2CDCFFC000ABCF7F /* KMPObservableViewModel.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KMPObservableViewModel.swift.swift; sourceTree = "<group>"; };
 		B0A0552E2CDE4842006CFD07 /* LogtoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogtoClient.swift; sourceTree = "<group>"; };
 		B0D1492E2CDFB416007963F9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		B0D149302CDFE780007963F9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		B0D149332CDFE8E2007963F9 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
+		B0D149372CE0F349007963F9 /* BottomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomTabBar.swift; sourceTree = "<group>"; };
+		B0D1493B2CE112E0007963F9 /* FeaturedEventsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedEventsView.swift; sourceTree = "<group>"; };
+		B0D1493D2CE11445007963F9 /* ChatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsView.swift; sourceTree = "<group>"; };
+		B0D1493F2CE11950007963F9 /* PageTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTitleView.swift; sourceTree = "<group>"; };
+		B0D149412CE119D2007963F9 /* HomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,11 +102,12 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				B0D1492E2CDFB416007963F9 /* LoginView.swift */,
+				B0D149392CE112C9007963F9 /* Pages */,
+				B0D149362CE0F336007963F9 /* Components */,
 				B0A055282CDE47F7006CFD07 /* Logto */,
 				B036971B2CDCFFC000ABCF7F /* KMPObservableViewModel.swift.swift */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
-				7555FF82242A565900829871 /* AppView.swift */,
+				7555FF82242A565900829871 /* RootView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
@@ -114,6 +129,36 @@
 				B0A0552E2CDE4842006CFD07 /* LogtoClient.swift */,
 			);
 			path = Logto;
+			sourceTree = "<group>";
+		};
+		B0D149362CE0F336007963F9 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B0D149372CE0F349007963F9 /* BottomTabBar.swift */,
+				B0D1493F2CE11950007963F9 /* PageTitleView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		B0D149392CE112C9007963F9 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				B0D1493A2CE112D7007963F9 /* Home */,
+				B0D1492E2CDFB416007963F9 /* LoginView.swift */,
+				B0D149302CDFE780007963F9 /* HomeView.swift */,
+				B0D149332CDFE8E2007963F9 /* AppView.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
+		B0D1493A2CE112D7007963F9 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B0D1493B2CE112E0007963F9 /* FeaturedEventsView.swift */,
+				B0D1493D2CE11445007963F9 /* ChatsView.swift */,
+				B0D149412CE119D2007963F9 /* HomePageView.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,10 +267,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0D1493C2CE112E4007963F9 /* FeaturedEventsView.swift in Sources */,
 				B0A0552F2CDE4845006CFD07 /* LogtoClient.swift in Sources */,
+				B0D1493E2CE11445007963F9 /* ChatsView.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
-				7555FF83242A565900829871 /* AppView.swift in Sources */,
+				7555FF83242A565900829871 /* RootView.swift in Sources */,
+				B0D149342CDFE8E5007963F9 /* AppView.swift in Sources */,
+				B0D149312CDFE782007963F9 /* HomeView.swift in Sources */,
+				B0D149402CE11950007963F9 /* PageTitleView.swift in Sources */,
 				B0D1492F2CDFB419007963F9 /* LoginView.swift in Sources */,
+				B0D149382CE0F349007963F9 /* BottomTabBar.swift in Sources */,
+				B0D149422CE119D2007963F9 /* HomePageView.swift in Sources */,
 				B036971C2CDCFFC200ABCF7F /* KMPObservableViewModel.swift.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

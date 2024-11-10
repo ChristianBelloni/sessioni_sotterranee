@@ -10,18 +10,20 @@ import Shared
 import KMPObservableViewModelSwiftUI
 
 struct LoginView: View {
-    @StateViewModel var viewModel: LoginViewModel
+    @ObservedViewModel var viewModel: LoginViewModel
     @State var user: LogtoUser? = nil
     
     var body: some View {
         if viewModel.user != nil {
             VStack {
-                Text("Hello, \(viewModel.user!.username ?? "undefined")!")
+                Text("Hello, \(viewModel.user!.username)!")
             }
         }
-        Button("Login") {
-            Task {
-                try await viewModel.signIn()
+        VStack(alignment: .center) {
+            Button("Login") {
+                Task {
+                    viewModel.send(action: LoginViewModel.ActionStartLogin())
+                }
             }
         }
     }

@@ -6,24 +6,25 @@ plugins {
     alias(libs.plugins.androidLibrary)
     id("com.google.devtools.ksp") version "2.0.21-1.0.25"
     id("com.rickclephas.kmp.nativecoroutines") version "1.0.0-ALPHA-37"
-    // kotlin("plugin.serialization") version "2.0.20"
-    id("org.openapi.generator") version "6.3.0"
+    kotlin("plugin.serialization") version "1.4.0"
+    id("org.openapi.generator") version "7.9.0"
 }
 
 val apiDescriptionFile = "$rootDir/api_specs3.json"
 val apiRootName = "it.sessionisotterranee.sessionisotterranee.api.client"
-val generatedSourcesPath = "$buildDir/generated"
+val generatedSourcesPath = "${layout.buildDirectory.get().asFile}/generated"
 
 openApiGenerate {
     generatorName.set("kotlin")
     inputSpec.set(apiDescriptionFile)
-    outputDir.set("$buildDir/generated")
+    outputDir.set(generatedSourcesPath)
     apiPackage.set("$apiRootName.api")
-    invokerPackage.set("$apiRootName.invoker")
+    packageName.set("$apiRootName.invoker")
     modelPackage.set("$apiRootName.model")
     library.set("multiplatform")
     validateSpec.set(true)
-    cleanupOutput.set(true)
+    configOptions.put("dateLibrary","kotlinx-datetime")
+    // cleanupOutput.set(true)
 }
 
 kotlin {
@@ -62,6 +63,8 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.client.encoding)
+                implementation(libs.kotlinx.datetime)
+                // implementation(libs.kmposable)
             }
         }
         val androidMain by getting {

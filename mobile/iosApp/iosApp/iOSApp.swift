@@ -5,23 +5,20 @@ import LogtoClient
 
 @main
 struct iOSApp: App {
+    let apiClient = AuthClient(
+        redirectUrL: "io.logto://callback",
+        client: try! LogtoClient(
+            useConfig: LogtoConfig(
+                endpoint: "https://auth-dev.sessioni-sotterranee.info/",
+                appId: "virc2uruta8tetclpuu03"
+            )
+        )
+    )
     var body: some Scene {
         WindowGroup {
-            AppView(
-                appViewModel: AppViewModel(
-                    loginViewModel: LoginViewModel(
-                        authClient: AuthClient(
-                            redirectUrL: "io.logto://callback",
-                            client: try! LogtoClient(
-                                useConfig: LogtoConfig(
-                                    endpoint: "https://auth-dev.sessioni-sotterranee.info/",
-                                    appId: "virc2uruta8tetclpuu03"
-                                )
-                            )
-                        )
-                    )
-                )
-            )
+            RootView(
+                appViewModel: RootViewModel(apiClient: ApiService(authClient: apiClient))
+            ).ignoresSafeArea()
         }
     }
 }

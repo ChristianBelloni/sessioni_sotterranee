@@ -21,6 +21,8 @@ pluginManagement {
 
 }
 
+
+
 dependencyResolutionManagement {
     repositories {
         google {
@@ -33,6 +35,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+includeBuild("../3rdparty/KMPosable-architecture")
 
 include(":composeApp")
 include(":shared")

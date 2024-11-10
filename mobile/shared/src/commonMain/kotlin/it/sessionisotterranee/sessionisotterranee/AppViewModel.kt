@@ -1,7 +1,11 @@
 package it.sessionisotterranee.sessionisotterranee
 
 import com.rickclephas.kmp.observableviewmodel.ViewModel
-import com.rickclephas.kmp.observableviewmodel.launch
+import it.sessionisotterranee.sessionisotterranee.api.client.model.User
+import kotlinx.coroutines.flow.MutableStateFlow
 
-data class AppViewModel(val loginViewModel: LoginViewModel): ViewModel() {
+
+class AppViewModel(private val apiClient: ApiService, private val _user: MutableStateFlow<User?>): ViewModel() {
+    val homeViewModel = HomeViewModel(apiClient, _user)
 }
+
