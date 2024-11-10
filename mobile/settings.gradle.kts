@@ -36,7 +36,5 @@ dependencyResolutionManagement {
     }
 }
 
-includeBuild("../3rdparty/KMPosable-architecture")
-
 include(":composeApp")
 include(":shared")
